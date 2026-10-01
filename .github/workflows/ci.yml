@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - iceraven
+    paths-ignore:
+      - "*.html"
+      - "docs/**"
+      - "_config.yml"
+      - ".nojekyll"
+      - "CNAME"
+      - "docs/CNAME"
 
 jobs:
   release-automation:
