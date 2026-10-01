@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#201c1f">
+  <title>Firefox Web — Unofficial Firefox-based Browser</title>
+  <meta name="description" content="An unofficial Firefox-based browser project for Android and desktop.">
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,120,70,.18), transparent 35%),
+        radial-gradient(circle at 85% 80%, rgba(140,90,255,.16), transparent 35%),
+        #0d0c0e;
+      color: #f5f3f5;
+    }
+    .wrap { width: min(1040px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 60px; }
+    header {
+      display: flex; justify-content: space-between; align-items: center; gap: 18px;
+      padding: 12px 0 42px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .2px; }
+    .mark {
+      width: 42px; height: 42px; border-radius: 14px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, #ff7a45, #8457ff);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      font-size: 20px;
+    }
+    nav a { color: #cfcad0; text-decoration: none; margin-left: 18px; }
+    nav a:hover { color: #fff; }
+    .hero { padding: 42px 0 28px; max-width: 820px; }
+    .eyebrow { color: #ff9369; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; font-size: 13px; }
+    h1 { font-size: clamp(42px, 8vw, 78px); line-height: .98; margin: 12px 0 18px; letter-spacing: -0.04em; }
+    .lead { font-size: clamp(18px, 2.4vw, 24px); line-height: 1.5; color: #cbc5cb; max-width: 760px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 13px 18px; border-radius: 12px; text-decoration: none; font-weight: 750;
+      border: 1px solid #3b363b; color: #fff; background: #19171a;
+    }
+    .btn.primary { border-color: transparent; background: linear-gradient(135deg, #ff7a45, #8a5cff); }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+    .card {
+      background: rgba(25,23,26,.86); border: 1px solid #302c31; border-radius: 18px;
+      padding: 22px; backdrop-filter: blur(8px);
+    }
+    .card h2 { margin: 0 0 8px; font-size: 20px; }
+    .card p { margin: 0; color: #bdb7bd; line-height: 1.55; }
+    .note {
+      margin-top: 22px; padding: 15px 18px; border-radius: 14px;
+      background: #151317; border: 1px solid #332e34; color: #aaa3aa; line-height: 1.5;
+    }
+    footer { margin-top: 50px; color: #8f888f; font-size: 14px; }
+    @media (max-width: 760px) {
+      header { align-items: flex-start; flex-direction: column; }
+      nav a { margin: 0 16px 0 0; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="brand">
+        <div class="mark">F</div>
+        <div>Firefox Web</div>
+      </div>
+      <nav>
+        <a href="https://github.com/Redev325/firefoxbrowserir">Source</a>
+        <a href="https://github.com/Redev325/firefoxbrowserir/releases">Releases</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">Unofficial Firefox-based browser project</div>
+      <h1>Browse the web your way.</h1>
+      <p class="lead">
+        A customized Firefox-based browser project built from the Iceraven/Fenix codebase,
+        with an Android version now and a desktop Firefox-based version planned alongside it.
+      </p>
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/Redev325/firefoxbrowserir/releases">Get Android builds</a>
+        <a class="btn" href="https://github.com/Redev325/firefoxbrowserir">View source</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Android</h2>
+        <p>The current fork uses Iceraven/Fenix and GeckoView for real web browsing on Android devices.</p>
+      </article>
+      <article class="card">
+        <h2>Desktop</h2>
+        <p>A separate Firefox desktop source tree will be used for Windows, macOS, and Linux builds.</p>
+      </article>
+      <article class="card">
+        <h2>Open source</h2>
+        <p>Source, build configuration, and future releases are published through the GitHub repository.</p>
+      </article>
+    </section>
+
+    <div class="note">
+      This project is independent and is not an official Mozilla Firefox product.
+      GitHub Pages hosts this website; the actual browser remains a native application.
+    </div>
+
+    <footer>
+      Firefox Web · <a href="https://github.com/Redev325/firefoxbrowserir" style="color:inherit;">Redev325/firefoxbrowserir</a>
+    </footer>
+  </main>
+</body>
+</html>
