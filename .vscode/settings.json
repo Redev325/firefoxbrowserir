@@ -1,0 +1,10 @@
+{
+  "task.allowAutomaticTasks": "on",
+  "remote.portsAttributes": {
+    "6080": {
+      "label": "noVNC + audio",
+      "onAutoForward": "notify",
+      "visibility": "private"
+    }
+  }
+}
