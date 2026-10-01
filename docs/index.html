@@ -3,116 +3,167 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#201c1f">
-  <title>Firefox Web — Unofficial Firefox-based Browser</title>
-  <meta name="description" content="An unofficial Firefox-based browser project for Android and desktop.">
+  <meta name="theme-color" content="#121116">
+  <title>Firefox Web</title>
+  <meta name="description" content="Firefox Web — a custom browser interface built around the Firefox-based project.">
   <style>
-    :root { color-scheme: dark; }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    :root { color-scheme: dark; --bg:#0d0c0f; --panel:#17151a; --panel2:#201d23; --line:#343039; --text:#f4f1f5; --muted:#aaa4ad; --accent:#ff8150; }
+    * { box-sizing:border-box; }
+    html, body { margin:0; height:100%; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; overflow:hidden; }
+    .app { height:100vh; display:flex; flex-direction:column; }
+    .topbar { background:rgba(18,17,22,.96); border-bottom:1px solid var(--line); padding:10px 12px; }
+    .row { display:flex; align-items:center; gap:8px; }
+    .brand { display:flex; align-items:center; gap:9px; margin-right:4px; white-space:nowrap; font-weight:800; }
+    .logo { width:34px; height:34px; border-radius:10px; display:grid; place-items:center; background:linear-gradient(135deg,#ff814f,#8057ff); font-weight:900; }
+    button { border:1px solid transparent; background:transparent; color:var(--muted); border-radius:9px; width:38px; height:38px; cursor:pointer; font-size:17px; }
+    button:hover { background:var(--panel2); color:var(--text); }
+    button:disabled { opacity:.35; cursor:default; }
+    .address-wrap { display:flex; align-items:center; gap:7px; flex:1; min-width:0; }
+    .address {
+      width:100%; border:1px solid var(--line); background:#111014; color:var(--text);
+      outline:none; border-radius:11px; padding:10px 13px; font-size:15px;
+    }
+    .address:focus { border-color:#625967; box-shadow:0 0 0 2px rgba(255,129,80,.12); }
+    .content { position:relative; flex:1; min-height:0; background:#fff; }
+    #frame { position:absolute; inset:0; width:100%; height:100%; border:0; background:#fff; }
+    .welcome {
+      position:absolute; inset:0; display:grid; place-items:center; padding:24px;
       background:
-        radial-gradient(circle at 20% 10%, rgba(255,120,70,.18), transparent 35%),
-        radial-gradient(circle at 85% 80%, rgba(140,90,255,.16), transparent 35%),
-        #0d0c0e;
-      color: #f5f3f5;
+        radial-gradient(circle at 18% 14%, rgba(255,129,80,.18), transparent 36%),
+        radial-gradient(circle at 84% 78%, rgba(128,87,255,.18), transparent 40%),
+        #0d0c0f;
     }
-    .wrap { width: min(1040px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 60px; }
-    header {
-      display: flex; justify-content: space-between; align-items: center; gap: 18px;
-      padding: 12px 0 42px;
+    .welcome-card { width:min(760px,100%); text-align:center; }
+    .welcome-card h1 { font-size:clamp(40px,7vw,72px); margin:0 0 14px; letter-spacing:-.05em; }
+    .welcome-card p { color:var(--muted); font-size:18px; line-height:1.55; margin:0 auto 24px; max-width:650px; }
+    .quick { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+    .quick button { width:auto; height:auto; padding:10px 14px; background:var(--panel); border-color:var(--line); }
+    .status {
+      position:absolute; left:12px; bottom:12px; z-index:5; display:none; gap:8px; align-items:center;
+      background:rgba(18,17,22,.94); border:1px solid var(--line); border-radius:11px; padding:9px 11px; color:var(--muted); font-size:13px;
+      box-shadow:0 8px 30px rgba(0,0,0,.28);
     }
-    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .2px; }
-    .mark {
-      width: 42px; height: 42px; border-radius: 14px;
-      display: grid; place-items: center;
-      background: linear-gradient(135deg, #ff7a45, #8457ff);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      font-size: 20px;
-    }
-    nav a { color: #cfcad0; text-decoration: none; margin-left: 18px; }
-    nav a:hover { color: #fff; }
-    .hero { padding: 42px 0 28px; max-width: 820px; }
-    .eyebrow { color: #ff9369; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; font-size: 13px; }
-    h1 { font-size: clamp(42px, 8vw, 78px); line-height: .98; margin: 12px 0 18px; letter-spacing: -0.04em; }
-    .lead { font-size: clamp(18px, 2.4vw, 24px); line-height: 1.5; color: #cbc5cb; max-width: 760px; }
-    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 13px 18px; border-radius: 12px; text-decoration: none; font-weight: 750;
-      border: 1px solid #3b363b; color: #fff; background: #19171a;
-    }
-    .btn.primary { border-color: transparent; background: linear-gradient(135deg, #ff7a45, #8a5cff); }
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
-    .card {
-      background: rgba(25,23,26,.86); border: 1px solid #302c31; border-radius: 18px;
-      padding: 22px; backdrop-filter: blur(8px);
-    }
-    .card h2 { margin: 0 0 8px; font-size: 20px; }
-    .card p { margin: 0; color: #bdb7bd; line-height: 1.55; }
-    .note {
-      margin-top: 22px; padding: 15px 18px; border-radius: 14px;
-      background: #151317; border: 1px solid #332e34; color: #aaa3aa; line-height: 1.5;
-    }
-    footer { margin-top: 50px; color: #8f888f; font-size: 14px; }
-    @media (max-width: 760px) {
-      header { align-items: flex-start; flex-direction: column; }
-      nav a { margin: 0 16px 0 0; }
-      .grid { grid-template-columns: 1fr; }
+    .status.show { display:flex; }
+    .status a { color:#fff; text-decoration:none; font-weight:700; }
+    @media (max-width:760px) {
+      .brand span { display:none; }
+      .topbar { padding:8px; }
+      .row { gap:5px; }
+      button { width:34px; height:34px; }
+      .address { padding:9px 10px; font-size:14px; }
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <header>
-      <div class="brand">
-        <div class="mark">F</div>
-        <div>Firefox Web</div>
+  <div class="app">
+    <header class="topbar">
+      <div class="row">
+        <div class="brand"><div class="logo">F</div><span>Firefox Web</span></div>
+        <button id="back" title="Back" aria-label="Back">‹</button>
+        <button id="forward" title="Forward" aria-label="Forward">›</button>
+        <button id="reload" title="Reload" aria-label="Reload">↻</button>
+        <div class="address-wrap">
+          <input id="address" class="address" autocomplete="off" spellcheck="false" value="https://example.com/" aria-label="Address or search">
+          <button id="go" title="Go" aria-label="Go">➜</button>
+        </div>
+        <button id="newtab" title="Home" aria-label="Home">⌂</button>
       </div>
-      <nav>
-        <a href="https://github.com/Redev325/firefoxbrowserir">Source</a>
-        <a href="https://github.com/Redev325/firefoxbrowserir/releases">Releases</a>
-      </nav>
     </header>
 
-    <section class="hero">
-      <div class="eyebrow">Unofficial Firefox-based browser project</div>
-      <h1>Browse the web your way.</h1>
-      <p class="lead">
-        A customized Firefox-based browser project built from the Iceraven/Fenix codebase,
-        with an Android version now and a desktop Firefox-based version planned alongside it.
-      </p>
-      <div class="actions">
-        <a class="btn primary" href="https://github.com/Redev325/firefoxbrowserir/releases">Get Android builds</a>
-        <a class="btn" href="https://github.com/Redev325/firefoxbrowserir">View source</a>
+    <main class="content">
+      <div id="welcome" class="welcome">
+        <div class="welcome-card">
+          <h1>Browse the web.</h1>
+          <p>Enter a website address or a search in the bar above. This page provides the browser interface and an embedded viewing area.</p>
+          <div class="quick">
+            <button data-url="https://example.com/">Example</button>
+            <button data-url="https://www.wikipedia.org/">Wikipedia</button>
+            <button data-url="https://www.mozilla.org/">Mozilla</button>
+          </div>
+        </div>
       </div>
-    </section>
+      <iframe id="frame" title="Web browsing area" hidden referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <div id="status" class="status">
+        <span>Some websites block embedded viewing.</span>
+        <a id="openExternal" href="#" target="_blank" rel="noopener noreferrer">Open this page</a>
+      </div>
+    </main>
+  </div>
 
-    <section class="grid">
-      <article class="card">
-        <h2>Android</h2>
-        <p>The current fork uses Iceraven/Fenix and GeckoView for real web browsing on Android devices.</p>
-      </article>
-      <article class="card">
-        <h2>Desktop</h2>
-        <p>A separate Firefox desktop source tree will be used for Windows, macOS, and Linux builds.</p>
-      </article>
-      <article class="card">
-        <h2>Open source</h2>
-        <p>Source, build configuration, and future releases are published through the GitHub repository.</p>
-      </article>
-    </section>
+  <script>
+    const frame = document.getElementById("frame");
+    const welcome = document.getElementById("welcome");
+    const address = document.getElementById("address");
+    const status = document.getElementById("status");
+    const openExternal = document.getElementById("openExternal");
+    const back = document.getElementById("back");
+    const forward = document.getElementById("forward");
+    let history = [];
+    let index = -1;
 
-    <div class="note">
-      This project is independent and is not an official Mozilla Firefox product.
-      GitHub Pages hosts this website; the actual browser remains a native application.
-    </div>
+    function normalize(input) {
+      let value = input.trim();
+      if (!value) return "https://example.com/";
+      if (/^[a-z][a-z0-9+.-]*:\/\//i.test(value)) return value;
+      if (value.includes(" ") || !value.includes(".")) {
+        return "https://www.google.com/search?q=" + encodeURIComponent(value);
+      }
+      return "https://" + value;
+    }
 
-    <footer>
-      Firefox Web · <a href="https://github.com/Redev325/firefoxbrowserir" style="color:inherit;">Redev325/firefoxbrowserir</a>
-    </footer>
-  </main>
+    function updateButtons() {
+      back.disabled = index <= 0;
+      forward.disabled = index >= history.length - 1;
+    }
+
+    function load(url, addHistory = true) {
+      const normalized = normalize(url);
+      address.value = normalized;
+      openExternal.href = normalized;
+      welcome.hidden = true;
+      frame.hidden = false;
+      frame.src = normalized;
+
+      if (addHistory) {
+        history = history.slice(0, index + 1);
+        history.push(normalized);
+        index++;
+      }
+      updateButtons();
+    }
+
+    document.getElementById("go").addEventListener("click", () => load(address.value));
+    address.addEventListener("keydown", e => { if (e.key === "Enter") load(address.value); });
+
+    back.addEventListener("click", () => {
+      if (index > 0) { index--; load(history[index], false); }
+    });
+
+    forward.addEventListener("click", () => {
+      if (index < history.length - 1) { index++; load(history[index], false); }
+    });
+
+    document.getElementById("reload").addEventListener("click", () => {
+      if (!frame.hidden) frame.src = frame.src;
+    });
+
+    document.getElementById("newtab").addEventListener("click", () => {
+      frame.hidden = true;
+      welcome.hidden = false;
+      address.value = "";
+      status.classList.remove("show");
+    });
+
+    document.querySelectorAll("[data-url]").forEach(btn => {
+      btn.addEventListener("click", () => load(btn.dataset.url));
+    });
+
+    frame.addEventListener("load", () => {
+      status.classList.add("show");
+      setTimeout(() => status.classList.remove("show"), 4500);
+    });
+
+    updateButtons();
+  </script>
 </body>
 </html>
